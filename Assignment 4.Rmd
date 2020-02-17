@@ -2,30 +2,13 @@
 title: "Assignment 4"
 author: "Jessica Smyrski"
 date: "2/10/2020"
-output:
-  md_document:
-    variant: gfm
+output: word_document
+always_allow_html: yes
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
-library(tidyverse)
-library(plotly)
 ```
-
-Assignment 4 is very similar to assignment 2. Instead of using our ggplot2 skills, we will be using our newly developed plotly skills!
-
-1. Choose a domain of interest
-2. Pose a question you would like to answer related to the question
-3. Find the data sources you will need to answer your question
-
-The final submission (pushed to your github assignment four repository) should document:
-- the question you intend to answer
-- where you got the data and what was required to obtain it (including code if needed)
-- any transformations or rearrangements of the dataset that you needed to perform; in particular, describe how you got the data into the format needed by plotly.
-
-After you have constructed the visualization, write a caption and a paragraph describing the visualization, and how it answers the question you posed. Think of the figure, the caption, and the text as material you might include in a research paper.
 
 ## Question:
 My fiancee and I are in pursuit of a house to call our own. Because he works as a Monroe County Probation Officer, we are unable to live outside of Monroe County. This, along with other requirements (such as 3 bedrooms, 2 bathrooms, a fenced in backyard for our new golden retriever pup, etc.) restricts our househunting search. An additional requirement is that we want our neighborhood to be as safe as possible. Looking at the data from the Division of Criminal Justice Services helps put into perspective the types and amounts of crimes that happen in each area of Monroe County. 
@@ -39,6 +22,9 @@ The Division of Criminal Justice Services (DCJS) collects crime reports from mor
 To answer the questions posed above, I created a plotly scatter plot to show the data. I also created a bar graph to show the number of violent crimes compared to property crimes, specifically looking at 2018. It is clear from the first scatter plot that Rochester City Police Department has the largest number of crimes compared to all other local Police Departments. It is clear that the number of crimes for all local Police Departments have seemed to drop, meaning that overall the towns on Monroe County are safer now than they were ten years ago. Looking at just 2018 statistics, the safest town to live in would be Fairport. The Fairport Police Department reported only 1 violent crime and 23 total crimes overall in 2018. Compared to Rochester City Police Department who reported 1,615 violent crimes and 8,651 total crimes overall in 2018.
 
 ```{r Total Crime Graph, echo=FALSE, warning=FALSE}
+library(tidyverse)
+library(plotly)
+
 TotalCrime <- read.csv(file = file.choose())
 View(TotalCrime)
 
@@ -58,7 +44,6 @@ plot_ly(data = TotalCrime, x = ~Year) %>%
          showlegend = TRUE,
          title = "Number of Crimes Reported to Police in Monroe County (1990 to 2018)")
 ```
-
 
 ```{r 2018 Bar Chart, echo=FALSE, warning=FALSE}
 TotalCrime2018 <- read.csv(file = file.choose())
