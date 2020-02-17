@@ -2,7 +2,7 @@
 title: "Assignment 4"
 author: "Jessica Smyrski"
 date: "2/10/2020"
-output: word_document
+output: md_document
 always_allow_html: yes
 ---
 
