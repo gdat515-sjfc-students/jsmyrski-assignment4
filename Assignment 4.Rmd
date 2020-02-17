@@ -1,0 +1,77 @@
+---
+title: "Assignment 4"
+author: "Jessica Smyrski"
+date: "2/10/2020"
+output:
+  md_document:
+    variant: gfm
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(plotly)
+```
+
+Assignment 4 is very similar to assignment 2. Instead of using our ggplot2 skills, we will be using our newly developed plotly skills!
+
+1. Choose a domain of interest
+2. Pose a question you would like to answer related to the question
+3. Find the data sources you will need to answer your question
+
+The final submission (pushed to your github assignment four repository) should document:
+- the question you intend to answer
+- where you got the data and what was required to obtain it (including code if needed)
+- any transformations or rearrangements of the dataset that you needed to perform; in particular, describe how you got the data into the format needed by plotly.
+
+After you have constructed the visualization, write a caption and a paragraph describing the visualization, and how it answers the question you posed. Think of the figure, the caption, and the text as material you might include in a research paper.
+
+## Question:
+My fiancee and I are in pursuit of a house to call our own. Because he works as a Monroe County Probation Officer, we are unable to live outside of Monroe County. This, along with other requirements (such as 3 bedrooms, 2 bathrooms, a fenced in backyard for our new golden retriever pup, etc.) restricts our househunting search. An additional requirement is that we want our neighborhood to be as safe as possible. Looking at the data from the Division of Criminal Justice Services helps put into perspective the types and amounts of crimes that happen in each area of Monroe County. 
+The question that I will be trying to answer is: "Where in Monroe County is it the safest to live?". By plotting the data as a time series, I will also be able to answer the question "Has the number of crimes increased or decreased over time in Monroe County?".
+
+## Data: 
+The data I used to answer these questions was found on Data.NY.Gov and looked at the Monroe County Crime Index.
+The Division of Criminal Justice Services (DCJS) collects crime reports from more than 500 New York State police and sheriffs’ departments. DCJS compiles these reports as New York’s official crime statistics and submits them to the FBI under the National Uniform Crime Reporting (UCR) Program. UCR uses standard offense definitions to count crime in localities across America regardless of variations in crime laws from state to state. In New York State, law enforcement agencies use the UCR system to report their monthly crime totals to DCJS. The UCR reporting system collects information on seven crimes classified as Index offenses which are most commonly used to gauge overall crime volume. These include the violent crimes of murder/non-negligent manslaughter, forcible rape, robbery, and aggravated assault; and the property crimes of burglary, larceny, and motor vehicle theft. Police agencies may experience reporting problems that preclude accurate or complete reporting. The counts represent only crimes reported to the police but not total crimes that occurred.
+
+## Summary:
+To answer the questions posed above, I created a plotly scatter plot to show the data. I also created a bar graph to show the number of violent crimes compared to property crimes, specifically looking at 2018. It is clear from the first scatter plot that Rochester City Police Department has the largest number of crimes compared to all other local Police Departments. It is clear that the number of crimes for all local Police Departments have seemed to drop, meaning that overall the towns on Monroe County are safer now than they were ten years ago. Looking at just 2018 statistics, the safest town to live in would be Fairport. The Fairport Police Department reported only 1 violent crime and 23 total crimes overall in 2018. Compared to Rochester City Police Department who reported 1,615 violent crimes and 8,651 total crimes overall in 2018.
+
+```{r Total Crime Graph, echo=FALSE, warning=FALSE}
+TotalCrime <- read.csv(file = file.choose())
+View(TotalCrime)
+
+plot_ly(data = TotalCrime, x = ~Year) %>%
+  add_trace(y = ~Brighton.Town.PD, name = "Brighton", mode = 'lines+markers') %>%
+  add_trace(y = ~Brockport.Vg.PD, name = "Brockport", mode = 'lines+markers') %>%
+  add_trace(y = ~East.Rochester.Vg.PD, name = "East Rochester", mode = 'lines+markers')%>%
+  add_trace(y = ~Fairport.Vg.PD, name = "Fairport", mode = 'lines+markers') %>%
+  add_trace(y = ~Gates.Town.PD, name = "Gates", mode = 'lines+markers') %>%
+  add_trace(y = ~Greece.Town.PD, name = "Greece", mode = 'lines+markers')%>%
+  add_trace(y = ~Irondequoit.Town.PD, name = "Irondequoit", mode = 'lines+markers') %>%
+  add_trace(y = ~Ogden.Town.PD, name = "Ogden", mode = 'lines+markers') %>%
+  add_trace(y = ~Rochester.City.PD, name = "Rochester", mode = 'lines+markers')%>%
+  add_trace(y = ~Webster.Town.and.Vg.PD, name = "Webster", mode = 'lines+markers')%>%
+  layout(xaxis = list(title = "Years"),
+          yaxis = list(title = "Number of Crimes"),
+         showlegend = TRUE,
+         title = "Number of Crimes Reported to Police in Monroe County (1990 to 2018)")
+```
+
+
+```{r 2018 Bar Chart, echo=FALSE, warning=FALSE}
+TotalCrime2018 <- read.csv(file = file.choose())
+View(TotalCrime2018)
+
+plot_ly(data = TotalCrime2018, x = ~PoliceDepartment) %>%
+  add_trace(y = ~ViolentCrimeTotal, name = "Violent Crimes", color = 'purple') %>%
+  add_trace(y = ~PropertyCrimeTotal, name = "Property Crimes", color = 'yellow')%>%
+  layout(xaxis = list(title = "Police Departments"),
+          yaxis = list(title = "Number of Crimes"),
+         showlegend = TRUE,
+         title = "Number of Crimes Reported to Police in Monroe County by Town in 2018")
+```
+
+## Limitations:
+The biggest limitation I had with this data was that it didn't provide population statistics per year, so I was unable to create a crime rate and conclude which area was the safest, comparetively speaking. Another problem I noticed was that there was no "Penfield" or other smaller towns in the data. I can assume these small towns use the closest large towns police departments. It was also hard to clarify the boarders of where these crimes actually occured, since there was no real location statistics.
